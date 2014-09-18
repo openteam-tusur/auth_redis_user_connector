@@ -10,7 +10,7 @@ class RedisUserConnector
   end
 
   def self.set(key, *attrs)
-    connection.hmset("#{namespace}:#{key}", attrs)
+    connection.hmset("#{namespace}:#{key}", *(attrs.flatten))
   end
 
   private
