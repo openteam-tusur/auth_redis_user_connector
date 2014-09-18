@@ -2,7 +2,7 @@ require 'redis'
 
 class RedisUserConnector
   def self.connect(hash)
-    @connect = hash
+    @connect = hash || {}
   end
 
   def self.get(key)
@@ -15,8 +15,14 @@ class RedisUserConnector
 
   private
 
+  def self.connect_options
+    raise "#{name}: Could not establish connection" unless @connect
+
+    @connect.merge :driver => :hiredis
+  end
+
   def self.connection
-    @connection ||= Redis.new(@connect.merge(:driver => :hiredis))
+    @connection ||= Redis.new(connect_options)
   end
 
   def self.namespace
