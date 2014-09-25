@@ -13,6 +13,14 @@ class RedisUserConnector
     connection.hmset("#{namespace}:#{key}", *(attrs.flatten))
   end
 
+  def self.pub(channel, message)
+    connection.publish(channel, message)
+  end
+
+  def self.sub(channel, &block)
+    connection.subscribe(channel, &block)
+  end
+
   private
 
   def self.connect_options
