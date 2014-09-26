@@ -30,7 +30,7 @@ class RedisUserConnector
   end
 
   def self.connection
-    @connection ||= Redis.new(connect_options)
+    Redis.new(connect_options)
   end
 
   def self.namespace
