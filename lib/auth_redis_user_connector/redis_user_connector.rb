@@ -14,11 +14,11 @@ class RedisUserConnector
   end
 
   def self.pub(channel, message)
-    connection.publish(channel, message)
+    pubsub_connection.publish(channel, message)
   end
 
   def self.sub(channel, &block)
-    connection.subscribe(channel, &block)
+    pubsub_connection.subscribe(channel, &block)
   end
 
   private
@@ -31,6 +31,10 @@ class RedisUserConnector
 
   def self.connection
     @connection ||= Redis.new(connect_options)
+  end
+
+  def self.pubsub_connection
+    @pubsub_connection ||= Redis.new(connect_options)
   end
 
   def self.namespace
