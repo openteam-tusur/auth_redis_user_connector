@@ -1,10 +1,6 @@
 require 'redis'
 
 class RedisUserConnector
-  def self.connect(hash)
-    @connect = hash
-  end
-
   def self.get(key)
     connection.hgetall("#{namespace}:#{key}")
   end
@@ -24,9 +20,11 @@ class RedisUserConnector
   private
 
   def self.connect_options
-    raise "#{name}: Could not establish connection" if @connect.nil? || @connect.empty?
+    connect_options = Settings['redis_user_connector']
 
-    @connect.merge :driver => :hiredis
+    raise "Error::Settings: <redis_user_connector> is undefined" if connect_options.nil? || connect_options.empty?
+
+    connect_options.merge :driver => :hiredis
   end
 
   def self.connection
