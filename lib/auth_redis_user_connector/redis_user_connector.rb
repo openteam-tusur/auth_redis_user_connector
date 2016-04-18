@@ -9,6 +9,10 @@ class RedisUserConnector
     connection.hmset("#{namespace}:#{key}", *(attrs.flatten))
   end
 
+  def self.clean(key, field)
+    connection.hdel("#{namespace}:#{key}", field)
+  end
+
   def self.pub(channel, message)
     pubsub_connection.publish(channel, message)
   end
